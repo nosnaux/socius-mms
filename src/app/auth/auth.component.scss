@@ -4,15 +4,15 @@
   height: 400px;
   background-color: white;
   position: absolute;
-  top: 0;
+  top:0;
   bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
   border-radius: 5px;
   border: 1px solid #ddd;
-  text-align: center; }
-  .auth img {
-    height: 250px; }
-
-/*# sourceMappingURL=auth.component.css.map */
+  text-align: center;
+  img {
+    height: 250px;
+  }
+}

@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 // Routing
 import { AppRouterModule } from './app.routing';
 
+// Auth
+import { AuthService } from './services/auth.service';
+
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
