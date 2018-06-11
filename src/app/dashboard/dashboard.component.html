@@ -1,0 +1,31 @@
+<div class="hero-sidebar bg-primary">
+  <div class="sidebar-brand">
+    <img src="./assets/socius-logo-white.png"/>
+  </div>
+  <div class="sidebar-nav">
+    <ul class="nav">
+      <li class="active"><a routerLink="./home"><i class="fas fa-fw fa-home"></i>Home</a></li>
+      <li><a routerLink="./members"><i class="fas fa-fw fa-users"></i>Members</a></li>
+      <li><a routerLink="./payments"><i class="fas fa-fw fa-dollar-sign"></i>Payments</a></li>
+      <li><a routerLink="./attendance"><i class="fas fa-fw fa-user-check"></i>Attendance</a></li>
+      <li><a routerLink="./administration"><i class="fas fa-fw fa-unlock-alt"></i>Administration</a></li>
+      <li><a routerLink="./tools"><i class="fas fa-fw fa-wrench"></i>Tools</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="hero-topnav bg-light">
+  <div id="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+    </ol>
+  </div>
+  <div class="authed-user">
+    <p>Welcome back, User <a routerLink="#"><i class="fas fa-sign-out-alt"></i>&nbsp;&nbsp;Logout</a></p>
+  </div>
+</div>
+
+<div class="content bg-light">
+  <router-outlet></router-outlet>
+</div>
