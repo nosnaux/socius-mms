@@ -1,0 +1,34 @@
+CREATE TABLE members (
+  int member_id AUTO INCREMENT NOT NULL  PRIMARY KEY,
+  char(3) member_type NOT NULL,
+  timestamp regdate NOT NULL,
+
+  varchar(5) title NOT NULL,
+  varchar(100) first_name NOT NULL,
+  varchar(100) last_name NOT NULL,
+  varchar(100) pref_name NOT NULL,
+
+  varchar(255) address NOT NULL,
+  varchar(255) email NOT NULL,
+  varchar(20) contactnumber NOT NULL,
+  char(1) gender NOT NULL,
+  date dob NOT NULL,
+);
+
+CREATE TABLE payments (
+  int payment_id NOT NULL PRIMARY KEY,
+  int member_id NOT NULL FOREIGN KEY,
+
+  date receieved_date NOT NULL,
+  date payment_for NOT NULL,
+  decimal payment_amount NOT NULL,
+  varchar(5) payment_type
+
+  FOREIGN KEY (member_id) REFERENCES members(member_id)
+);
+
+CREATE TABLE attendance (
+  int session_id NOT NULL AUTO INCREMENT PRIMARY KEY,
+  date session_date NOT NULL,
+  varchar(5000) attendees
+);
