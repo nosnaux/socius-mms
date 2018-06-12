@@ -1,11 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 // Routing
 import { AppRouterModule } from './app.routing';
 
 // Auth
 import { AuthService } from './services/auth.service';
+
+// services
+import { MembersService } from './services/members.service';
 
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
@@ -33,7 +37,8 @@ import { ToolsComponent } from './dashboard/tools/tools.component';
   ],
   imports: [
     BrowserModule,
-    AppRouterModule
+    AppRouterModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
