@@ -10,6 +10,7 @@ import { AuthService } from './services/auth.service';
 
 // services
 import { MembersService } from './services/members.service';
+import { PaymentsService } from './services/payments.service';
 
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';

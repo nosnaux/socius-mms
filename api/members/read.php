@@ -7,12 +7,15 @@
   include_once '../config/dbconnect.php';
 
   if(!empty($_GET["action"])) {
-    switch(strtolower($_GET["action"])) {
+    switch(strtolower(strip_tags(trim($_GET["action"])))) {
       case 'all':
         echo getAllMembers($mysql);
         break;
       case 'single':
-        echo getSingleMember($mysql, $_GET["id"]);
+        echo getSingleMember($mysql, strip_tags(trim($_GET["id"])));
+        break;
+      case 'simple':
+        echo getAllSimpleMembers($mysql);
         break;
       default:
         echo json_encode(array("error" => "invalid action"));
@@ -27,7 +30,7 @@
   @description Retrieves all records from the database in the members table.
 */
   function getAllMembers($aConn) {
-    $query = "SELECT member_id, member_type, regdate, first_name, last_name, pref_name FROM members";
+    $query = "SELECT * FROM members";
     if($result = $aConn->query($query)) {
       if($result->num_rows > 0) {
         $memberArray["members"] = array();
@@ -35,11 +38,17 @@
           extract($row);
           $member_item = array(
             "id" => $member_id,
+            "title" => $title,
             "firstname" => $first_name,
             "lastname" => $last_name,
             "prefname" => $pref_name,
             "regdate" => $regdate,
-            "membertype" => $member_type
+            "membertype" => $member_type,
+            "address" => $address,
+            "email" => $email,
+            "contactnumber" => $contactnumber,
+            "gender" => $gender,
+            "dateofbirth" => $dob
           );
           array_push($memberArray["members"], $member_item);
         }
@@ -53,42 +62,7 @@
     }
   }
 
-/*
-  @name getSingleMember()
-  @params $aConn (MySQL Connection), $aMemberID (Integer)
-  @description Searches the members table in the database for an exact match in ID
-*/
-  function getSingleMember($aConn,$aMemberID) {
-    if(!empty($aMemberID)) {
-      $query = "SELECT * FROM members WHERE member_id = ".strip_tags(trim($_GET["id"])).";";
-      if($result = $aConn->query($query)) {
-        if($result->num_rows > 0) {
-          $row = $result->fetch_assoc();
-          extract($row);
-          $member_item = array(
-            "id" => $member_id,
-            "membertype" => $member_type,
-            "regdate" => $regdate,
-            "title" => $title,
-            "firstname" => $first_name,
-            "lastname" => $last_name,
-            "prefname" => $pref_name,
-            "gender" => $gender,
-            "dateofbirth" => $dob,
-            "address" => $address,
-            "contactnum" => $contactnumber,
-            "email" => $email
-          );
-          return json_encode($member_item);
-        } else {
-          return "{}";
-        }
-      } else {
-        return json_encode(array("error" => "Warning: Query error. Please check database and query line (60)."));
-      }
-    } else {
-      return "{}";
-    }
-  }
+
+  $mysql->close();
 
 ?>

@@ -5,3 +5,14 @@
 body {
   background-color: #eee;
 }
+
+.full {
+  background-color: white;
+  min-height: calc(100%);
+  padding: 10px;
+}
+
+.table > thead {
+  background-color: #2C3E50 !important;
+  color: white;
+}

@@ -38,7 +38,7 @@
   .hero-topnav .authed-user {
     z-index: 999;
     position: absolute;
-    top: 12px;
+    top: 7px;
     right: 15px;
     float: right; }
     .hero-topnav .authed-user p a {
