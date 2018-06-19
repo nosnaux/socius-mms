@@ -1,3 +1,100 @@
-<p>
-  payments works!
-</p>
+<div class="full">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <h2>
+          Payments <span class="badge badge-primary">0</span>
+          <button class="btn btn-lg btn-success header-button" data-toggle="modal" data-target="#npModal"><i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Add New Payment</button>
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="searchbox"><strong><i class="fas fa-search"></i>&nbsp;Search for payment:</strong></label>
+          <input type="text" name="searchbox" class="form-control" placeholder="Search by ID, names, dates, etc."/>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered text-center">
+            <thead class="thead-dark">
+              <th>Receipt ID</th>
+              <th>Member</th>
+              <th>Payment Amount</th>
+              <th>Recieved Date</th>
+              <th>Payment For</th>
+              <th>Payment Type</th>
+              <th>Next Due</th>
+            </thead>
+            <tbody>
+              <!-- <tr></tr> -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="npModal" tabindex="-1" role="dialog" aria-labelledby="npCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="npCenterTitle">Add New Payment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="npReceipt"><strong>Receipt ID: <span class="req">*</span></strong></label>
+          <input type="text" class="form-control" name="npReceipt" id="npReceipt" placeholder="Example: 1A182074YE6166739" required/>
+        </div>
+        <div class="form-group">
+          <label for="npMember"><strong>Member: <span class="req">*</span></strong></label>
+          <select class="form-control" name="npMember" id="npMember" required>
+            <option value="1">John Smith (ID: 1)</option>
+            <option value="2">George Smith (ID: 2)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="npRecieved"><strong>Recieved date: <span class="req">*</span></strong></label>
+          <div class="input-group mb-3">
+            <input type="date" class="form-control" placeholder="DD/MM/YYYY" name="npRecieved" id="npRecieved" aria-label="DD/MM/YYYY" aria-describedby="basic-addon2" required>
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" (click)="getTodayDateInput('npRecieved');">Get Today's Date</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="npAmount"><strong>Payment amount: <span class="req">*</span></strong></label>
+          <input type="text" name="npAmount" id="npAmount" placeholder="Example: 26.00" class="form-control" required/>
+        </div>
+        <div class="form-group">
+          <label for="npType"><strong>Payment type: <span class="req">*</span></strong></label>
+          <select class="form-control" name="npType" id="npType" required>
+            <option value="m">Monthly</option>
+            <option value="h">Half-Yearly</option>
+            <option value="y">Yearly</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="npFor"><strong>Payment for: <span class="req">*</span></strong></label>
+          <div class="input-group mb-3">
+            <input type="date" class="form-control" name="npFor" id="npFor" placeholder="DD/MM/YYYY" aria-label="DD/MM/YYYY" aria-describedby="basic-addon2" required>
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button" (click)="getTodayDateInput('npFor');">Get Today's Date</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success">Add member</button>
+      </div>
+    </div>
+  </div>
+</div>

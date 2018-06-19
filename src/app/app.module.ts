@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 // Routing
 import { AppRouterModule } from './app.routing';
@@ -39,7 +40,8 @@ import { ToolsComponent } from './dashboard/tools/tools.component';
   imports: [
     BrowserModule,
     AppRouterModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

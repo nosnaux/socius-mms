@@ -14,30 +14,36 @@
           <label for="searchbox"><strong><i class="fas fa-search"></i>&nbsp;Search for member:</strong></label>
           <input type="text" name="searchbox" class="form-control" placeholder="Search by ID, names, addresses, contact details, etc."/>
         </div>
-        <table class="table table-bordered table-striped text-center">
-          <thead>
-            <tr>
-              <th scope="col">Member ID</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Date Registered</th>
-              <th scope="col">Membership Type</th>
-              <th scope="col">Next Due Payment</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let member of members">
-              <td><a routerLink="../member/{{member.id}}">{{member.id}}</a></td>
-              <td>{{member.firstname}}</td>
-              <td>{{member.lastname}}</td>
-              <td>{{member.email | lowercase}}</td>
-              <td>{{member.regdate | date}}</td>
-              <td>{{member.membertype}}</td>
-              <td>{{member.nextdue | date}}</td>
-            </tr>
-          </tbody>
-        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped text-center">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Member ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Date Registered</th>
+                <th scope="col">Membership Type</th>
+                <th scope="col">Next Due Payment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let member of members">
+                <td><a routerLink="../member/{{member.id}}">{{member.id}}</a></td>
+                <td>{{member.firstname}}</td>
+                <td>{{member.lastname}}</td>
+                <td>{{member.email | lowercase}}</td>
+                <td>{{member.regdate | date}}</td>
+                <td>{{member.membertype}}</td>
+                <td>{{member.nextdue | date}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -59,7 +65,7 @@
             <legend>Personal Details</legend>
             <div class="form-group">
               <label for="nmTitle"><strong>Title: <span class="req">*</span></strong></label>
-              <select class="form-control" name="nmTitle" id="nmTitle" required>
+              <select class="form-control" name="nmTitle" id="nmTitle" [(ngModel)]="newMember.title" required>
                 <option value="mr">Mr.</option>
                 <option value="ms">Ms.</option>
                 <option value="mrs">Mrs.</option>
@@ -68,50 +74,50 @@
             </div>
             <div class="form-group">
               <label for="nmFirstName"><strong>First name: <span class="req">*</span></strong></label>
-              <input type="text" class="form-control" placeholder="Example: Jonathon" name="nmFirstName" id="nmFirstName" required/>
+              <input type="text" class="form-control" placeholder="Example: Jonathon" [(ngModel)]="newMember.firstname" name="nmFirstName" id="nmFirstName" required/>
             </div>
             <div class="form-group">
               <label for="nmLastName"><strong>Last name: <span class="req">*</span></strong></label>
-              <input type="text" class="form-control" placeholder="Example: Doe" name="nmLastName" id="nmLastName" required/>
+              <input type="text" class="form-control" placeholder="Example: Doe" [(ngModel)]="newMember.lastname" name="nmLastName" id="nmLastName" required/>
             </div>
             <div class="form-group">
               <label for="nmNickName"><strong>Nick name:</strong></label>
-              <input type="text" class="form-control" placeholder="Example: Jon" name="nmNickName" id="nmNickName"/>
+              <input type="text" class="form-control" placeholder="Example: Jon" [(ngModel)]="newMember.prefname" name="nmNickName" id="nmNickName"/>
             </div>
             <div class="form-group">
               <label for="nmGender"><strong>Gender: <span class="req">*</span></strong></label><br />
               <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" name="nmGender" id="nmGender1" value="m" required/>
+                <input type="radio" class="form-check-input" name="nmGender" [(ngModel)]="newMember.gender" id="nmGender1" value="m" required/>
                 <label class="form-check-label" for="nmGender1">Male</label>
               </div>
               <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" name="nmGender" id="nmGender2" value="f" required/>
+                <input type="radio" class="form-check-input" name="nmGender" [(ngModel)]="newMember.gender" id="nmGender2" value="f" required/>
                 <label class="form-check-label" for="nmGenders">Female</label>
               </div>
             </div>
             <div class="form-group">
               <label for="nmDob"><strong>Date of birth: <span class="req">*</span></strong></label>
-              <input type="date" name="nmDob" id="nmDob" class="form-control" placeholder="DD/MM/YYYY" required/>
+              <input type="date" name="nmDob" id="nmDob" class="form-control" [(ngModel)]="newMember.dateofbirth" placeholder="DD/MM/YYYY" required/>
             </div>
           </fieldset>
           <fieldset>
             <legend>Contact Details</legend>
             <div class="form-group">
               <label for="nmMainAddress"><strong>Home Address: <span class="req">*</span></strong></label>
-              <input type="text" name="nmMainAddress" id="nmMainAddress" class="form-control" placeholder="Example: 328 Swanston Street" required/>
+              <input type="text" name="nmMainAddress" id="nmMainAddress" class="form-control" [(ngModel)]="newMember.mainaddress" placeholder="Example: 328 Swanston Street" required/>
             </div>
             <div class="form-group">
               <label for="nmSuburb"><strong>Suburb: <span class="req">*</span></strong></label>
-              <input type="text" name="nmSuburb" id="nmSuburb" class="form-control" placeholder="Example: Melbourne" required/>
+              <input type="text" name="nmSuburb" id="nmSuburb" class="form-control" [(ngModel)]="newMember.suburb" placeholder="Example: Melbourne" required/>
             </div>
             <div class="form-row">
               <div class="form-group col-6">
                 <label for="nmPostcode"><strong>Postcode: <span class="req">*</span></strong></label>
-                <input type="text" maxlength="10" class="form-control" name="nmPostcode" id="nmPostcode" placeholder="Example: 3000" required/>
+                <input type="text" maxlength="10" class="form-control" name="nmPostcode" id="nmPostcode" [(ngModel)]="newMember.postcode" placeholder="Example: 3000" required/>
               </div>
               <div class="form-group col-6">
                 <label for="nmState"><strong>State: <span class="req">*</span></strong></label>
-                <select name="nmState" id="nmState" class="form-control" required>
+                <select name="nmState" id="nmState" class="form-control" [(ngModel)]="newMember.state" required>
                   <option value="vic" selected>Victoria</option>
                   <option value="nsw">New South Wales</option>
                   <option value="qld">Queensland</option>
@@ -124,21 +130,19 @@
             </div>
             <div class="form-group">
               <label for="nmEmail"><strong>Email address: <span class="req">*</span></strong></label>
-              <input type="email" class="form-control" name="nmEmail" id="nmEmail" placeholder="Example: example@email.com" required/>
+              <input type="email" class="form-control" name="nmEmail" id="nmEmail" [(ngModel)]="newMember.email" placeholder="Example: example@email.com" required/>
             </div>
             <div class="form-group">
               <label for="nmContactNumber"><strong>Contact Number: <span class="req">*</span></strong></label>
-              <input type="text" maxlength="10" class="form-control"  name="nmContactNumber" id="nmContactNumber" placeholder="Example: 0386647000" required/>
+              <input type="text" maxlength="10" class="form-control"  name="nmContactNumber" id="nmContactNumber" [(ngModel)]="newMember.contactnumber" placeholder="Example: 0386647000" required/>
             </div>
           </fieldset>
           <fieldset>
             <legend>Membership Details</legend>
             <div class="form-group">
               <label for="nmMemberType"><strong>Membership Type: <span class="req">*</span></strong></label>
-              <select class="form-control" name="nmMemberType" id="nmMemberType" required>
-                <option value="st" selected>Student</option>
-                <option value="em">Employee</option>
-                <option value="gp">General Public</option>
+              <select class="form-control" name="nmMemberType" id="nmMemberType" [(ngModel)]="newMember.mtype" required>
+                <option *ngFor="let mtype of regFormSettings.membershipTypes" [value]="mtype.value">{{mtype.name}}</option>
               </select>
             </div>
           </fieldset>
@@ -146,7 +150,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add member</button>
+        <button type="button" class="btn btn-primary" (click)="submitRegForm();">Add member</button>
       </div>
     </div>
   </div>

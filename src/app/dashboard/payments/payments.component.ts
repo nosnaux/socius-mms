@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MembersService } from '../../services/members.service';
 import { PaymentsService } from '../../services/payments.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-payments',
@@ -14,5 +15,10 @@ export class PaymentsComponent implements OnInit {
   ngOnInit() {
     this.paymentService.getAllPayments();
   }
+
+  public getTodayDateInput(selector) {
+    var input = (<HTMLInputElement>document.getElementById(selector)).value = moment().format("YYYY-MM-DD");
+  }
+
 
 }
