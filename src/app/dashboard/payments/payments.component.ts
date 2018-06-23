@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MembersService } from '../../services/members.service';
+import { Payment } from '../../services/payments.service';
 import { PaymentsService } from '../../services/payments.service';
 import * as moment from 'moment';
 
@@ -10,10 +11,14 @@ import * as moment from 'moment';
 })
 export class PaymentsComponent implements OnInit {
 
+  payments: Payment[] = [];
+
   constructor(private paymentService: PaymentsService, private memberService: MembersService) { }
 
   ngOnInit() {
-    this.paymentService.getAllPayments();
+    this.paymentService.getAllPayments().subscribe(data => {
+      this.payments = data["payments"];
+    });
   }
 
   public getTodayDateInput(selector) {

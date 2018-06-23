@@ -1,39 +1,37 @@
 <?php
-  header("Access-Control-Allow-Origin: *");
-  header("Content-Type: application/json; charset=UTF-8");
-  header("Access-Control-Allow-Headers: Content-Type");
-  header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-
-  include_once '../config/dbconnect.php';
-
-  if(!empty($_GET["action"])) {
-    switch(strtolower(strip_tags(trim($_GET["action"])))) {
-      case 'all':
-        echo getAllMembers($mysql);
-        break;
-      case 'single':
-        echo getSingleMember($mysql, strip_tags(trim($_GET["id"])));
-        break;
-      case 'simple':
-        echo getAllSimpleMembers($mysql);
-        break;
-      default:
-        echo json_encode(array("error" => "invalid action"));
-    }
-  } else {
-    echo json_encode(array("error" => "action not found"));
-  }
-
 /*
-  @name getAllMembers()
-  @params $aConn (MySQL Connection)
-  @description Retrieves all records from the database in the members table.
+  @name retrieve_from_member_table()
+  @params $conn (MySQL Connection), $id (Optional number search parameter)
+  @description Retrieves member record(s) from the database.
 */
-  function getAllMembers($aConn) {
-    $query = "SELECT * FROM members";
-    if($result = $aConn->query($query)) {
-      if($result->num_rows > 0) {
-        $memberArray["members"] = array();
+function retrieve_from_member_table($conn, $id) {
+  $query = "SELECT * FROM members";
+  // Append to query if there is an apparent search parameter
+  if($id > 0) $query .= (" WHERE member_id = ".$id);
+  if($result = $conn->query($query)) {
+    if($result->num_rows > 0) {
+      //If results returned is a single record, return a single JSON Object
+      if($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        extract($row);
+        $member_item = array(
+          "id" => $member_id,
+          "title" => $title,
+          "firstname" => $first_name,
+          "lastname" => $last_name,
+          "prefname" => $pref_name,
+          "regdate" => $regdate,
+          "membertype" => $member_type,
+          "address" => $address,
+          "email" => $email,
+          "contactnumber" => $contactnumber,
+          "gender" => $gender,
+          "dateofbirth" => $dob
+        );
+        return json_encode(array("result" => array("code" => 200, "message" => "OK"), "member" => $member_item));
+      } else {
+        //If results returned is multiple records, return a array of JSON Object
+        $member_array = array();
         while($row = $result->fetch_assoc()) {
           extract($row);
           $member_item = array(
@@ -50,19 +48,15 @@
             "gender" => $gender,
             "dateofbirth" => $dob
           );
-          array_push($memberArray["members"], $member_item);
+          array_push($member_array, $member_item);
         }
-        return json_encode($memberArray);
-      } else {
-        return "{}";
+        return json_encode(array("result" => array("code" => 200, "message" => "OK"), "members" => $member_array));
       }
     } else {
-      return json_encode(array("error" => "Query error. Please check database and query line (28)."));
-      exit;
+      return json_encode(array("result" => array("code" => 200, "message" => "OK"), "members" => "{}"));
     }
+  } else {
+    return json_encode(array("result" => array("code" => 500, "message" => "Server error: Could not complete operation (line: 7).")));
   }
-
-
-  $mysql->close();
-
+}
 ?>

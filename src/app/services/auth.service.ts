@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import * as auth0 from 'auth0-js';
 import { environment } from '../../environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 (window as any).global = window;
 
@@ -20,7 +21,7 @@ export class AuthService {
     scope: 'openid'
   });
 
-  constructor(public routeHelper: Router) { }
+  constructor(public routeHelper: Router, private toastr: ToastrService) { }
 
   public login(): void {
     this.auth0.authorize();
@@ -50,6 +51,9 @@ export class AuthService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
     this.routeHelper.navigate(['/login']);
+    this.toastr.success('You have successfully logged out.','',{
+      positionClass: 'toast-top-full-width'
+    });
   }
 
   public isAuthed(): boolean {

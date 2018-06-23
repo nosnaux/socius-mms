@@ -12,3 +12,14 @@ body {
   /* padding: 10px; */
   padding-top: 5px;
 }
+
+.toast-top-full-width {
+  top: 10px;
+}
+
+.toast-container .toast {
+  box-shadow: 0 0 0px #999999;
+}
+.toast-container .toast:hover {
+  box-shadow: 0 0 0px #000000;
+}

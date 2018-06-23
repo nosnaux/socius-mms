@@ -1,7 +1,7 @@
 .hero-sidebar {
   width: 250px;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0; }
   .hero-sidebar .sidebar-brand {
@@ -39,7 +39,7 @@
     z-index: 999;
     position: absolute;
     top: 7px;
-    right: 15px;
+    right: 5px;
     float: right; }
     .hero-topnav .authed-user p a {
       padding-left: 5px; }

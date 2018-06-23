@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col">
         <h2>
-          Payments <span class="badge badge-primary">0</span>
+          Payments <span class="badge badge-primary">{{payments.length}}</span>
           <button class="btn btn-lg btn-success header-button" data-toggle="modal" data-target="#npModal"><i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Add New Payment</button>
         </h2>
       </div>
@@ -30,7 +30,15 @@
               <th>Next Due</th>
             </thead>
             <tbody>
-              <!-- <tr></tr> -->
+              <tr *ngFor="let payment of payments">
+                <td>{{payment.receiptid}}</td>
+                <td>{{payment.member | capatalize}}</td>
+                <td>{{payment.paymentamount | currency}}</td>
+                <td>{{payment.recieveddate | date}}</td>
+                <td>{{payment.paymentfor | date}}</td>
+                <td>{{payment.paymenttype | PaymentTypeToFull}}</td>
+                <td>{{payment.nextdue | date}}</td>
+              </tr>
             </tbody>
           </table>
         </div>

@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import * as $ from 'jquery';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 
 export interface Member {
   id: number;
@@ -32,22 +34,23 @@ export interface Member {
 */
 export class MembersService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient, private toastr: ToastrService) { }
 
   /**
-    @name getMemberList()
-    @return Returns An observable object from the HTTP request (Observable<Response>)
-    @description Uses the provided API to retrieve a list of members
+  *  @name getMemberList()
+  *  @return Returns An observable object from the HTTP request (Observable<Response>)
+  *  @description Uses the provided API to retrieve a list of members
   */
   public getMemberList() {
-    return this._http.get("/api/members/read.php", {params: new HttpParams().set('action', 'all')}).pipe(map(res => {
-      if(res['members']) {
+    return this._http.get("/api/members.php").pipe(map(res => {
+      if(!(res['result']['code'] === 200)) {
+        this.toastr.error(res["result"]["message"], '', {positionClass: 'toast-top-full-width'});
+        return null;
+      } else {
         for(var i = 0; i < res['members'].length; i++) {
           this.processMember(res['members'][i]);
         }
         return res;
-      } else {
-        return null;
       }
     }));
   }
@@ -61,10 +64,23 @@ export class MembersService {
     var regDate = new Date(aMember['regdate']);
     aMember['regdate'] = moment(regDate).format('YYYY-MM-DD');
     if(!aMember['lastpaymentdate']) {
-      aMember['nextdue'] = moment(aMember['regdate']).add(14, 'days').format('YYYY-MM-DD');
+      aMember['nextdue'] = moment(aMember['regdate']).add(1, 'weeks').format('YYYY-MM-DD');
     } else {
-      aMember['nextdue'] = moment(aMember['lastpaymentdate']).add(14, 'days').format('YYYY-MM-DD');
+      aMember['nextdue'] = moment(aMember['lastpaymentdate']).add(4, 'weeks').format('YYYY-MM-DD');
     }
+  }
+
+  public declareNewMember(aMemberDetails: object) {
+    return this._http.post("/api/members.php", aMemberDetails).pipe(map(
+      res => {
+        if(res["result"]["code"] === 200) {
+          this.toastr.success("New member successfully added to database.",'',{positionClass: 'toast-top-full-width'});
+          this.processMember(res['member']);
+        } else {
+          this.toastr.error(res["result"]["message"], '', {positionClass: 'toast-top-full-width'});
+        }
+        return res;
+      }));
   }
 
 }

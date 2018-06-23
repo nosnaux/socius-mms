@@ -2,12 +2,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 // Routing
 import { AppRouterModule } from './app.routing';
 
 // Auth
 import { AuthService } from './services/auth.service';
+
+//Pipe
+import { FullMemberTypePipe } from './pipes/membershiptype.pipe';
+import { CapatalizePipe } from './pipes/capatalize.pipe';
+import { PaymentTypeToFullPipe } from './pipes/paymenttype.pipe';
+
 
 // services
 import { MembersService } from './services/members.service';
@@ -35,13 +43,18 @@ import { ToolsComponent } from './dashboard/tools/tools.component';
     PaymentsComponent,
     AttendanceComponent,
     AdministrationComponent,
-    ToolsComponent
+    ToolsComponent,
+    FullMemberTypePipe,
+    CapatalizePipe,
+    PaymentTypeToFullPipe
   ],
   imports: [
     BrowserModule,
     AppRouterModule,
+    BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

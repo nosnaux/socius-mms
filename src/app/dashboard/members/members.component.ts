@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MembersService } from '../../services/members.service';
 import { Member } from '../../services/members.service';
+import * as $ from 'jquery';
 import * as moment from 'moment';
 import { environment } from '../../../environments/environment';
 
@@ -28,7 +29,10 @@ export class MembersComponent implements OnInit {
   }
 
   public submitRegForm(): void {
-    console.log(this.newMember);
+    this.membersService.declareNewMember(this.newMember).subscribe(data => {
+      this.members.push(data["member"]);
+    });
+    this.newMember = {};
   }
 
 }

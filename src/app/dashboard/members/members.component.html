@@ -34,11 +34,11 @@
             <tbody>
               <tr *ngFor="let member of members">
                 <td><a routerLink="../member/{{member.id}}">{{member.id}}</a></td>
-                <td>{{member.firstname}}</td>
-                <td>{{member.lastname}}</td>
+                <td>{{member.firstname | capatalize}}</td>
+                <td>{{member.lastname | capatalize}}</td>
                 <td>{{member.email | lowercase}}</td>
                 <td>{{member.regdate | date}}</td>
-                <td>{{member.membertype}}</td>
+                <td>{{member.membertype | FullMemberType}}</td>
                 <td>{{member.nextdue | date}}</td>
               </tr>
             </tbody>
@@ -82,7 +82,7 @@
             </div>
             <div class="form-group">
               <label for="nmNickName"><strong>Nick name:</strong></label>
-              <input type="text" class="form-control" placeholder="Example: Jon" [(ngModel)]="newMember.prefname" name="nmNickName" id="nmNickName"/>
+              <input type="text" class="form-control" placeholder="Example: Jon" [(ngModel)]="newMember.prefname" value=' ' name="nmNickName" id="nmNickName"/>
             </div>
             <div class="form-group">
               <label for="nmGender"><strong>Gender: <span class="req">*</span></strong></label><br />
@@ -150,7 +150,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="submitRegForm();">Add member</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="submitRegForm();">Add member</button>
       </div>
     </div>
   </div>

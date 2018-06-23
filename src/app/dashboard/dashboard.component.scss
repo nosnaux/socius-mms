@@ -4,10 +4,9 @@ $topbar-height: 50px;
 .hero-sidebar {
   width: $sidebar-width;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-
   .sidebar-brand {
     width: 100%;
     height: $sidebar-width;
@@ -15,7 +14,6 @@ $topbar-height: 50px;
       width: 100%;
     }
   }
-
   .sidebar-nav {
     .nav {
       display: block;
@@ -45,7 +43,6 @@ $topbar-height: 50px;
       }
     }
   }
-
 }
 
 .hero-topnav {
@@ -54,12 +51,11 @@ $topbar-height: 50px;
   position: absolute;
   top: 0;
   left: $sidebar-width;
-
   .authed-user {
     z-index: 999;
     position: absolute;
     top: 7px;
-    right: 15px;
+    right: 5px;
     float: right;
     p {
       a {
@@ -67,7 +63,6 @@ $topbar-height: 50px;
       }
     }
   }
-
 }
 
 .content {
