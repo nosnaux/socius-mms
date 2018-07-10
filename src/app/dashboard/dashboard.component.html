@@ -21,7 +21,8 @@
     </ol>
   </div>
   <div class="authed-user">
-    <p>Welcome back, User <button class="btn btn-link" (click)="logoff()"><i class="fas fa-sign-out-alt"></i>&nbsp;&nbsp;Logout</button></p>
+    <div class="profile-img"><img src="{{_auth_profileimg}}" alt="prof-img"/></div>
+    <p>Welcome back, {{_auth_username}}. <button class="btn btn-link" (click)="logoff()"><i class="fas fa-sign-out-alt"></i>&nbsp;&nbsp;Logout</button></p>
   </div>
 </div>
 

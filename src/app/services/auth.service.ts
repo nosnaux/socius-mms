@@ -18,7 +18,7 @@ export class AuthService {
     responseType: 'token id_token',
     audience: 'https://socius-mms.au.auth0.com/userinfo',
     redirectUri: environment.auth0.callbackURL,
-    scope: 'openid'
+    scope: 'openid profile'
   });
 
   constructor(public routeHelper: Router, private toastr: ToastrService) { }
@@ -44,6 +44,7 @@ export class AuthService {
     localStorage.setItem('access_token', aAuthResult.accessToken);
     localStorage.setItem('id_token', aAuthResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
+    // localStorage.setItem('user_name', aAuth)
   }
 
   public logout(): void {

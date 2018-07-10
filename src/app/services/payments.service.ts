@@ -39,15 +39,34 @@ export class PaymentsService {
     }
   }
 
-  public getAllPayments() {
+  public getPaymentList() {
     return this._http.get("/api/payments.php").pipe(map(res => {
       if(res["result"]["code"] === 200) {
-        for(var i = 0; i < res["payments"].length; i++) {
-          this.processPayment(res["payments"][i]);
+        if(!res['payments']) {
+          this.processPayment(res['payment']);
+        } else {
+          if(res['payments'] === "{}") return null;
+          for(var i = 0; i < res["payments"].length; i++) {
+            this.processPayment(res["payments"][i]);
+          }
         }
         return res;
       } else {
         this.toastr.error(res["result"]["message"], '', {positionClass: 'toast-top-full-width'});
+      }
+    }));
+  }
+
+
+  public declareNewPayment(paymentObject: object) {
+    return this._http.post("/api/payments.php", paymentObject).pipe(map(res => {
+      if(res["result"]["code"] === 200) {
+        this.toastr.success("Payment successfully added to database.", '', {positionClass: 'toast-top-full-width'});
+        this.processPayment(res["payment"]);
+        return res;
+      } else {
+        this.toastr.error(res["result"]["message"], '', {positionClass: 'toast-top-full-width'});
+        return null;
       }
     }));
   }

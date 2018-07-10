@@ -4,7 +4,7 @@
       <div class="col">
         <h2>
           Payments <span class="badge badge-primary">{{payments.length}}</span>
-          <button class="btn btn-lg btn-success header-button" data-toggle="modal" data-target="#npModal"><i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Add New Payment</button>
+          <button class="btn btn-lg btn-success header-button" [disabled]="members.length === 0" title="You must have at least 1 member to add a payment." data-toggle="modal" data-target="#npModal"><i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Add New Payment</button>
         </h2>
       </div>
     </div>
@@ -31,7 +31,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let payment of payments">
-                <td>{{payment.receiptid}}</td>
+                <td><button class="btn btn-sm btn-link" (click)="selectPayment(payment);">{{payment.receiptid}}</button></td>
                 <td>{{payment.member | capatalize}}</td>
                 <td>{{payment.paymentamount | currency}}</td>
                 <td>{{payment.recieveddate | date}}</td>
@@ -42,6 +42,18 @@
             </tbody>
           </table>
         </div>
+        <div class="row" *ngIf="payments.length === 0">
+          <div class="col">
+            <div class="jumbotron">
+              <div class="container">
+                <h1><i class="far fa-frown"></i></h1>
+                <h1 class="display-5">We couldn't find anything!</h1>
+                <p class="lead">There were no payment records found. Start populating this table by adding new payments.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <pre>{{selectedPayment | json}}</pre>
       </div>
     </div>
   </div>
@@ -56,53 +68,52 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="npReceipt"><strong>Receipt ID: <span class="req">*</span></strong></label>
-          <input type="text" class="form-control" name="npReceipt" id="npReceipt" placeholder="Example: 1A182074YE6166739" required/>
-        </div>
-        <div class="form-group">
-          <label for="npMember"><strong>Member: <span class="req">*</span></strong></label>
-          <select class="form-control" name="npMember" id="npMember" required>
-            <option value="1">John Smith (ID: 1)</option>
-            <option value="2">George Smith (ID: 2)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="npRecieved"><strong>Recieved date: <span class="req">*</span></strong></label>
-          <div class="input-group mb-3">
-            <input type="date" class="form-control" placeholder="DD/MM/YYYY" name="npRecieved" id="npRecieved" aria-label="DD/MM/YYYY" aria-describedby="basic-addon2" required>
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="button" (click)="getTodayDateInput('npRecieved');">Get Today's Date</button>
+      <form [formGroup]="paymentForm" (ngSubmit)="submitPaymentForm();" novalidate>
+        <div class="modal-body">
+            <div class="form-group">
+              <label for="receiptid"><strong>Receipt ID: <span class="req">*</span></strong></label>
+              <input type="text" class="form-control" formControlName="receiptid" name="receiptid" id="receiptid" placeholder="Example: 1A182074YE6166739" required/>
             </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="npAmount"><strong>Payment amount: <span class="req">*</span></strong></label>
-          <input type="text" name="npAmount" id="npAmount" placeholder="Example: 26.00" class="form-control" required/>
-        </div>
-        <div class="form-group">
-          <label for="npType"><strong>Payment type: <span class="req">*</span></strong></label>
-          <select class="form-control" name="npType" id="npType" required>
-            <option value="m">Monthly</option>
-            <option value="h">Half-Yearly</option>
-            <option value="y">Yearly</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="npFor"><strong>Payment for: <span class="req">*</span></strong></label>
-          <div class="input-group mb-3">
-            <input type="date" class="form-control" name="npFor" id="npFor" placeholder="DD/MM/YYYY" aria-label="DD/MM/YYYY" aria-describedby="basic-addon2" required>
-            <div class="input-group-append">
-              <button class="btn btn-primary" type="button" (click)="getTodayDateInput('npFor');">Get Today's Date</button>
+            <div class="form-group">
+              <label for="member"><strong>Member: <span class="req">*</span></strong></label>
+              <select class="form-control" name="member" formControlName="member" (change)="getNextDueFromMember(paymentForm.value.member)" id="member" required>
+                <option *ngFor="let member of members | orderBy:'firstname'" value="{{member.id}}">{{member.firstname | capatalize}} {{member.lastname | capatalize}} (ID: {{member.id}})</option>
+              </select>
             </div>
-          </div>
+            <div class="form-group">
+              <label for="recdate"><strong>Recieved date: <span class="req">*</span></strong></label>
+              <div class="input-group mb-3">
+                <input type="date" class="form-control" placeholder="DD/MM/YYYY" formControlName="recdate" name="recdate" id="recdate" aria-label="DD/MM/YYYY" aria-describedby="basic-addon2" required>
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button" (click)="getTodayDateInput('rec');">Get Today's Date</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="type"><strong>Payment type: <span class="req">*</span></strong></label>
+              <select class="form-control" (change)="paymentTypeSelected(paymentForm.value.type)" formControlName="type" name="type" id="type" required>
+                <option *ngFor="let setting of paymentSettings" value="{{setting.short}}">{{setting.name}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="paidamount"><strong>Payment amount: <span class="req">*</span></strong></label>
+              <input type="text" name="paidamount" id="paidamount" formControlName="paidamount" placeholder="Example: 26.00" class="form-control" required/>
+            </div>
+            <div class="form-group">
+              <label for="for"><strong>Payment for: <span class="req">*</span></strong></label>
+              <div class="input-group mb-3">
+                <input type="date" class="form-control" name="for" formControlName="for" id="for" placeholder="DD/MM/YYYY" aria-label="DD/MM/YYYY" aria-describedby="basic-addon2" required>
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button" (click)="getTodayDateInput('for');">Get Today's Date</button>
+                </div>
+              </div>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success">Add member</button>
-      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-success" [disabled]="paymentForm.invalid" onclick="$('#npModal').modal('hide');">Add member</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

@@ -9,6 +9,10 @@ import * as $ from 'jquery';
 })
 export class DashboardComponent implements OnInit {
 
+  //Get these values from Auth0
+  _auth_profileimg = "https://s.gravatar.com/avatar/8f65fb8bbf311ba5df2cfecfceda3482?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fde.png";
+  _auth_username = "John Smith";
+
   constructor(private auth: AuthService) { }
 
   ngOnInit() {

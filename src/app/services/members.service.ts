@@ -28,10 +28,6 @@ export interface Member {
   providedIn: 'root'
 })
 
-/*
-  Implements the various CRUD operations relating
-  to the Members classes.
-*/
 export class MembersService {
 
   constructor(private _http: HttpClient, private toastr: ToastrService) { }
@@ -47,13 +43,22 @@ export class MembersService {
         this.toastr.error(res["result"]["message"], '', {positionClass: 'toast-top-full-width'});
         return null;
       } else {
-        for(var i = 0; i < res['members'].length; i++) {
-          this.processMember(res['members'][i]);
+        if(!(res['members'] === "{}")) {
+          if(res['members']) {
+            for(var i = 0; i < res['members'].length; i++) {
+              this.processMember(res['members'][i]);
+            }
+          } else {
+            this.processMember(res['member']);
+          }
+          return res;
+        } else {
+          return null;
         }
-        return res;
       }
     }));
   }
+
 
   /**
     @name processMember()
@@ -63,13 +68,32 @@ export class MembersService {
   public processMember(aMember: Member): void {
     var regDate = new Date(aMember['regdate']);
     aMember['regdate'] = moment(regDate).format('YYYY-MM-DD');
-    if(!aMember['lastpaymentdate']) {
+    if((aMember['lastpaymentfor'] === 'NULL')) {
       aMember['nextdue'] = moment(aMember['regdate']).add(1, 'weeks').format('YYYY-MM-DD');
     } else {
-      aMember['nextdue'] = moment(aMember['lastpaymentdate']).add(4, 'weeks').format('YYYY-MM-DD');
+      switch(aMember['lastpaymenttype']) {
+        case "MN":
+          aMember['nextdue'] = moment(aMember['lastpaymentfor']).add(4, 'weeks').format('YYYY-MM-DD');
+          break;
+        case "HY":
+          aMember['nextdue'] = moment(aMember['lastpaymentfor']).add(6, 'months').format('YYYY-MM-DD');
+          break;
+        case "YR":
+          aMember['nextdue'] = moment(aMember['lastpaymentfor']).add(1, 'year').format('YYYY-MM-DD');
+          break;
+        default:
+          break;
+      }
     }
   }
 
+
+  /**
+  * @name declareNewMember()
+  * @param aMemberDetails A Member object
+  * @desc Sends a HTTP POST request to the database, and sending the member object
+  *       to add to the database.
+  */
   public declareNewMember(aMemberDetails: object) {
     return this._http.post("/api/members.php", aMemberDetails).pipe(map(
       res => {

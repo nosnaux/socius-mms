@@ -15,9 +15,9 @@ export const environment = {
     {name: 'General Public', value: 'GP'}
   ],
   paymentSettings: [
-    {name: 'Monthly', value: 'MN'},
-    {name: 'Half-Yearly', value: 'HY'},
-    {name: 'Yearly', value: 'YR'}
+    {name: 'Monthly', short: 'MN', value: 26.00},
+    {name: 'Half-Yearly', short: 'HY', value: 148.00},
+    {name: 'Yearly', short: 'YR', value: 269.00}
   ]
 };
 

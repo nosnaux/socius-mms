@@ -5,7 +5,7 @@
   @description Retrieves member record(s) from the database.
 */
 function retrieve_from_member_table($conn, $id) {
-  $query = "SELECT * FROM members";
+  $query = "SELECT *, (SELECT IFNULL((SELECT payment_for FROM payments WHERE member_id = m.member_id ORDER BY payment_for DESC LIMIT 1 ) ,'NULL')) AS lastpaymentfor, (SELECT IFNULL((SELECT payment_type FROM payments WHERE member_id = m.member_id ORDER BY payment_for DESC LIMIT 1 ) ,'NULL')) AS lastpaymenttype FROM members m";
   // Append to query if there is an apparent search parameter
   if($id > 0) $query .= (" WHERE member_id = ".$id);
   if($result = $conn->query($query)) {
@@ -26,7 +26,9 @@ function retrieve_from_member_table($conn, $id) {
           "email" => $email,
           "contactnumber" => $contactnumber,
           "gender" => $gender,
-          "dateofbirth" => $dob
+          "dateofbirth" => $dob,
+          "lastpaymentfor" => $lastpaymentfor,
+          "lastpaymenttype" => $lastpaymenttype
         );
         return json_encode(array("result" => array("code" => 200, "message" => "OK"), "member" => $member_item));
       } else {
@@ -46,7 +48,9 @@ function retrieve_from_member_table($conn, $id) {
             "email" => $email,
             "contactnumber" => $contactnumber,
             "gender" => $gender,
-            "dateofbirth" => $dob
+            "dateofbirth" => $dob,
+            "lastpaymentfor" => $lastpaymentfor,
+            "lastpaymenttype" => $lastpaymenttype
           );
           array_push($member_array, $member_item);
         }

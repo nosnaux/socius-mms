@@ -6,12 +6,14 @@
   header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
   include "config/dbconnect.php";
   include "payments/read.php";
+  include "payments/write.php";
 
   switch($_SERVER["REQUEST_METHOD"]) {
-    case 'GET':
+    case "GET":
       echo retrieve_from_payment_table($mysql);
       break;
     case 'POST':
+      echo declare_new_payment($mysql, json_decode(file_get_contents("php://input"), TRUE));
       break;
     case 'PUT':
       break;
