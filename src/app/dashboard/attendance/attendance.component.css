@@ -1,5 +1,19 @@
-.card {
-  height: auto;
+.list-group {
+  min-height: 550px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   overflow-y: scroll; }
+  .list-group .list-group-item {
+    border-left: 0px;
+    border-radius: 0px;
+    border-right: 0px; }
+  .list-group .list-group-item:first-of-type {
+    border-top: 0px; }
+
+.attendance {
+  padding-top: 25px; }
+  .attendance .btn {
+    margin-left: 10px;
+    float: right; }
 
 /*# sourceMappingURL=attendance.component.css.map */

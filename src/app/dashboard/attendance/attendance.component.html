@@ -13,44 +13,64 @@
             </div>
             <div class="row">
               <div class="col-6">
-                <h3>Not Attending <span class="badge badge-primary">0</span></h3>
+                <h3>Not Attending <span class="badge badge-primary">{{members.length}}</span></h3>
                 <div class="row">
                   <div class="col">
                     <div class="form-group">
                       <label for="search"><i class="fas fa-search"></i> Search for non-attending members:</label>
                       <input type="text" class="form-control" name="" placeholder="Search for a non-attending member.."/>
                     </div>
-                    <div class="card">
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                      </ul>
+                    <div class="list-group">
+                      <button *ngFor="let member of members" type="button" class="list-group-item list-group-item-action" (click)="markAttendance(member.id)">
+                        {{member.firstname | capatalize}} {{member.lastname | capatalize}} (Member ID: {{member.id}})<br /><strong>Next due:</strong> {{member.nextdue | date}}
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-6">
-                <h3>Attending <span class="badge badge-primary">0</span></h3>
+                <h3>Attending <span class="badge badge-primary">{{attendees.length}}</span></h3>
                 <div class="row">
                   <div class="col">
                     <div class="form-group">
                       <label for="search"><i class="fas fa-search"></i> Search for participating members:</label>
                       <input type="text" class="form-control" name="" placeholder="Search for an attending member.."/>
                     </div>
-                    <div class="card">
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                      </ul>
+                    <div class="list-group">
+                      <button *ngFor="let attendee of attendees" type="button" class="list-group-item list-group-item-action" (click)="releaseAttendance(attendee.id)">
+                        {{attendee.firstname | capatalize}} {{attendee.lastname | capatalize}} (Member ID: {{attendee.id}})<br /><strong>Next due:</strong> {{attendee.nextdue | date}}
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col attendance">
+                <button type="button" class="btn btn-md btn-primary" (click)="saveAttendance()">Save attendance</button>
+                <button type="button" class="btn btn-md btn-secondary" data-toggle="modal" data-target="#refreshModal">Refresh</button>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="refreshModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are you sure?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <p>Any unsaved change(s) will be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary" onclick="location.reload();">Yes</button>
       </div>
     </div>
   </div>

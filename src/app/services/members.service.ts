@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 
 export interface Member {
-  id: number;
+  id: string;
   title: string;
   firstname: string;
   lastname: string;

@@ -1,34 +1,163 @@
-CREATE TABLE members (
-  int member_id AUTO INCREMENT NOT NULL  PRIMARY KEY,
-  char(3) member_type NOT NULL,
-  timestamp regdate NOT NULL,
+-- phpMyAdmin SQL Dump
+-- version 4.8.0.1
+-- httpswww.phpmyadmin.net
+--
+-- Host 127.0.0.1
+-- Generation Time Aug 27, 2018 at 0754 AM
+-- Server version 10.1.32-MariaDB
+-- PHP Version 7.2.5
 
-  varchar(5) title NOT NULL,
-  varchar(100) first_name NOT NULL,
-  varchar(100) last_name NOT NULL,
-  varchar(100) pref_name NOT NULL,
+SET SQL_MODE = NO_AUTO_VALUE_ON_ZERO;
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = +0000;
 
-  varchar(255) address NOT NULL,
-  varchar(255) email NOT NULL,
-  varchar(20) contactnumber NOT NULL,
-  char(1) gender NOT NULL,
-  date dob NOT NULL,
-);
 
-CREATE TABLE payments (
-  int payment_id NOT NULL PRIMARY KEY,
-  int member_id NOT NULL FOREIGN KEY,
+!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT ;
+!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS ;
+!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION ;
+!40101 SET NAMES utf8mb4 ;
 
-  date receieved_date NOT NULL,
-  date payment_for NOT NULL,
-  decimal payment_amount NOT NULL,
-  varchar(5) payment_type
+--
+-- Database `sociusmms`
+--
 
-  FOREIGN KEY (member_id) REFERENCES members(member_id)
-);
+-- --------------------------------------------------------
 
-CREATE TABLE attendance (
-  int session_id NOT NULL AUTO INCREMENT PRIMARY KEY,
-  date session_date NOT NULL,
-  varchar(5000) attendees
-);
+--
+-- Table structure for table `attendance`
+--
+
+CREATE TABLE `attendance` (
+  `session_id` int(11) NOT NULL,
+  `session_date` date NOT NULL,
+  `attendees` varchar(5000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `members`
+--
+
+CREATE TABLE `members` (
+  `member_id` int(11) NOT NULL,
+  `member_type` char(3) NOT NULL,
+  `regdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `title` varchar(5) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `pref_name` varchar(100) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `contactnumber` varchar(20) NOT NULL,
+  `gender` char(1) NOT NULL,
+  `dob` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `members`
+--
+
+INSERT INTO `members` (`member_id`, `member_type`, `regdate`, `title`, `first_name`, `last_name`, `pref_name`, `address`, `email`, `contactnumber`, `gender`, `dob`) VALUES
+(10, 'ST', '2018-07-01 055532', 'MS', 'MARY-ANNE', 'DOE', 'MARY', '123 SWANSTON STREET, MELBOURNE, 3000, VIC, AUSTRALIA', 'ma.doe@email.com', '0479473214', 'F', '1997-01-29'),
+(11, 'EM', '2018-07-01 055558', 'MR', 'JONATHON', 'SMITH', 'JOHN', '456 SWANSTON STREET, MELBOURNE, 3000, VIC, AUSTRALIA', 'j.smith@email.com', '0434975243', 'M', '1996-10-25'),
+(12, 'EM', '2018-07-01 060206', 'MRS', 'AMY', 'FARRAH FOWLER', '', '123 SOMEWHERE STREET, MELBOURNE, 3000, VIC, AUSTRALIA', 'a.ff@email.com', '0434980752', 'F', '1987-07-06'),
+(13, 'ST', '2018-07-03 024745', 'MR', 'JANE', 'DOE', '', '328 SWANSTON STREET, MELBOURNE, 3000, VIC, AUSTRALIA', 'j.doe@email.com', '0443290857', 'F', '1996-10-25'),
+(14, 'ST', '2018-08-12 060218', 'MR', 'JOHN', 'ANDERSON', '', '123 SWANSTON STREET, MELBOURNE, 3000, VIC, AUSTRALIA', 'j.anderson@email.com', '0432151794', 'M', '1996-10-25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `payment_id` varchar(100) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `receieved_date` date NOT NULL,
+  `payment_for` date NOT NULL,
+  `payment_amount` decimal(10,0) NOT NULL,
+  `payment_type` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`payment_id`, `member_id`, `receieved_date`, `payment_for`, `payment_amount`, `payment_type`) VALUES
+('68901HOILEA08RTWEV', 14, '2018-08-12', '2018-08-19', '269', 'YR'),
+('A70DFS07AYFD079A0FYD', 12, '2018-07-03', '2018-07-08', '26', 'MN'),
+('DSA9FSA079FSD09A8U', 12, '2018-07-03', '2018-08-05', '148', 'HY'),
+('FDS9A07HOAIUF2LDSSD', 12, '2018-07-03', '2019-02-05', '269', 'YR');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE `settings` (
+  `remote_reg_status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`remote_reg_status`) VALUES
+(0);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD PRIMARY KEY (`session_id`);
+
+--
+-- Indexes for table `members`
+--
+ALTER TABLE `members`
+  ADD PRIMARY KEY (`member_id`);
+
+--
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`payment_id`),
+  ADD KEY `member_id` (`member_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `session_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `members`
+--
+ALTER TABLE `members`
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `payments`
+--
+ALTER TABLE `payments`
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`);
+COMMIT;
+
+!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT ;
+!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS ;
+!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION ;
